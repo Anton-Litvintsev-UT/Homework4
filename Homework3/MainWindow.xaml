@@ -1,0 +1,41 @@
+﻿<Window x:Class="Homework3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Homework3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:TypeNameConverter x:Key="TypeNameConverter"/>
+    </Window.Resources>
+    <Grid>
+        <ListBox x:Name="lbAnimalName" ItemsSource="{Binding Animals}"  SelectedItem="{Binding SelectedAnimal}" Margin="10,17,547,88">
+            <ListBox.ItemTemplate>
+                 <DataTemplate>
+                    <TextBlock>
+                <Run Text="{Binding ., Converter={StaticResource TypeNameConverter}}" />
+                <Run Text=": " />
+                <Run Text="{Binding Name}" />
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label x:Name="lName" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Height="30" Margin="269,20,0,0" VerticalAlignment="Top" Width="82" Content="Name:"/>
+        <TextBlock x:Name="tblName" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Margin="362,25,0,0" TextWrapping="Wrap" Text="{Binding SelectedAnimal.Name}" VerticalAlignment="Top" Height="30" Width="411"/>
+
+        <Label x:Name="lAge" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Height="30" Margin="269,50,0,0"   VerticalAlignment="Top" Width="82" Content="Age:"/>
+        <TextBlock x:Name="tblAge" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Margin="362,55,0,0" TextWrapping="Wrap" Text="{Binding SelectedAnimal.Age}" VerticalAlignment="Top" Height="30" Width="411"/>
+
+        <Label x:Name="lDescription" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Height="30" Margin="269,75,0,0" VerticalAlignment="Top" Width="82" Content="Description:"/>
+        <TextBlock x:Name="tblDescription" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Margin="362,80,0,0" TextWrapping="Wrap" Text="{Binding SelectedDescription}" VerticalAlignment="Top" Height="75" Width="411"/>
+
+        <Button  x:Name="btnVoice" Visibility="{Binding IsSelectedAnimal}" Content="voice" HorizontalAlignment="Left" Margin="285,166,0,0" VerticalAlignment="Top"  Height="46" Width="66" Command="{Binding BtnVoiceCommand}" />
+        <Button x:Name="btnFeed" Visibility="{Binding IsSelectedAnimal}" Content="feed" HorizontalAlignment="Left" Margin="536,166,0,0" VerticalAlignment="Top"  Height="46" Width="237" Command="{Binding BtnFeedCommand}"/>
+        <TextBox x:Name="tbxFood" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Height="46" Margin="362,166,0,0" TextWrapping="Wrap" Text="{Binding Food}" VerticalAlignment="Top" Width="167"/>
+        <Button x:Name="btnRemoveAnimal" Visibility="{Binding IsSelectedAnimal}" Content="remove animal" HorizontalAlignment="Left" Margin="285,221,0,0" VerticalAlignment="Top"  Height="48" Width="488" Command="{Binding BtnRemoveAnimalCommand}"/>
+
+        <Button  x:Name="btnAddAnimal" Content="Add animal" HorizontalAlignment="Left" Margin="10,354,0,0" VerticalAlignment="Top"  Height="46" Width="243" Command="{Binding BtnAddAnimalCommand}"/>
+        <TextBlock x:Name="tblLogs" Text="{Binding LogsText}" HorizontalAlignment="Left" Margin="285,291,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="109" Width="488"/>
+    </Grid>
+</Window>
