@@ -134,6 +134,8 @@ namespace Homework3.Classes
                 if (result != null)
                 {
                     string members = string.Join(", ", result.Select(a => a.Name));
+
+                    // show statistics
                     AddLog(string.Format(Properties.Resource.enclosure_update, animalType.Name, result.Count(), members));
                     AddLog($"Enclosure for {animalType.Name} now has {result.Count()} animals.\nMembers: {members}");
 
