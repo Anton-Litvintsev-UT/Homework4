@@ -10,7 +10,7 @@ namespace Homework3.Classes
 {
     public class ViewModel : ObservableObject
     {
-        private Repository<AbstractAnimal> AnimalRepository { get; set; } = new();
+        private SqlRepository<AbstractAnimal> AnimalRepository { get; set; } = new();
         public ObservableCollection<AbstractAnimal> Animals { get; set; } = [];
         private List<string> LogsList { get; set; } = [];
         private Dictionary<Type, object>? Enclosures { get; set; } = null;
