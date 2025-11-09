@@ -58,9 +58,10 @@ namespace Homework3.Classes
         public ICommand LoosingConsciousnessCommand { get; }
         public ICommand AddLogCommand { get; }
 
-        public ViewModel()
+        private readonly ILogger _logger;
+        public ViewModel(ILogger logger)
         {
-            // load initial animals from repository
+            _logger = logger;
             Animals = new ObservableCollection<AbstractAnimal>(AnimalRepository.GetAll());
 
             // on ItemAdded event add animal to Animals list
@@ -178,7 +179,9 @@ namespace Homework3.Classes
         {
             if (string.IsNullOrWhiteSpace(message)) return;
 
-            LogsList.Add($"{DateTime.Now:T}: {message}");
+            var logMessage = $"{DateTime.Now:T}: {message}";
+            _logger.Log(logMessage);
+            LogsList.Add(logMessage);
             LogsText = string.Join(Environment.NewLine, LogsList.AsEnumerable().Reverse());
         }
 

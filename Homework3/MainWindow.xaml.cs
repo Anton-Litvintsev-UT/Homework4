@@ -1,4 +1,5 @@
 ﻿using Homework3.Classes;
+using Homework3.Interfaces;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -20,7 +21,11 @@ namespace Homework3
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ViewModel();
+
+            ILogger logger = new JsonLogger(); 
+            // var logger = new XmlLogger();
+
+            DataContext = new ViewModel(logger);
         }
     }
 }
