@@ -1,4 +1,4 @@
-﻿using Homework3.Classes;
+﻿using Homework3.Models;
 using System.Windows;
 using System.Windows.Controls;
 

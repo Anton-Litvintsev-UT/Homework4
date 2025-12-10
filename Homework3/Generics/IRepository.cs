@@ -6,5 +6,8 @@
         void Remove(T item);
         IEnumerable<T> GetAll();
         T? Find(Func<T, bool> predicate);
+
+        event Action<T>? ItemAdded;
+        event Action<T>? ItemRemoved;
     }
 }

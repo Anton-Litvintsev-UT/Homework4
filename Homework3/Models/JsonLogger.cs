@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.Json;
 
-namespace Homework3.Classes
+namespace Homework3.Models
 {
     public class JsonLogger : ILogger
     {
