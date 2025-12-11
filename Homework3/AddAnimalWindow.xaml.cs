@@ -1,4 +1,5 @@
 ﻿using Homework3.Models;
+using Homework3.Models.Animals;
 using System.Windows;
 using System.Windows.Controls;
 

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Homework3.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Homework3.Models
+namespace Homework3.Models.Animals
 {
     public abstract class AbstractAnimal
     {
@@ -11,6 +11,11 @@ namespace Homework3.Models
         public int Age { get; set; }
         public char FavoriteChar { get; set; }
         public string Type => GetType().Name;
+
+        public int? EnclosureId { get; set; }
+
+        [ForeignKey("EnclosureId")]
+        public virtual Enclosure? Enclosure { get; set; }
 
         private int consecutiveCorrectFeeds = 0;
 
@@ -48,7 +53,17 @@ namespace Homework3.Models
         // Reset counter after acting crazy
         public void ResetConsecutiveCorrectFeeds() => consecutiveCorrectFeeds = 0;
 
-        public virtual string Describe() => $"This is {Name}, aged {Age}.";
+        public virtual string Describe()
+        {
+            string baseDescription = $"This is {Name}, aged {Age}.";
+
+            if (Enclosure != null && !string.IsNullOrEmpty(Enclosure.Name))
+            {
+                baseDescription += $"\nCurrently residing in the {Enclosure.Name}.";
+            }
+
+            return baseDescription;
+        }
         public abstract string MakeSound();
 
         public virtual string ActCrazy() => $"{Name} the {Type} is acting crazy!";

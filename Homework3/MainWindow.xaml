@@ -12,7 +12,7 @@
     <Grid>
         <ListBox x:Name="lbAnimalName" ItemsSource="{Binding Animals}"  SelectedItem="{Binding SelectedAnimal}" Margin="10,17,547,88">
             <ListBox.ItemTemplate>
-                 <DataTemplate>
+                <DataTemplate>
                     <TextBlock>
                 <Run Text="{Binding ., Converter={StaticResource TypeNameConverter}}" />
                 <Run Text=": " />
@@ -29,6 +29,7 @@
 
         <Label x:Name="lDescription" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Height="30" Margin="269,75,0,0" VerticalAlignment="Top" Width="82" Content="Description:"/>
         <TextBlock x:Name="tblDescription" Visibility="{Binding IsSelectedAnimal}" HorizontalAlignment="Left" Margin="362,80,0,0" TextWrapping="Wrap" Text="{Binding SelectedDescription}" VerticalAlignment="Top" Height="75" Width="411"/>
+        <TextBlock Text="{Binding StatisticsText}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Width="200" Height="150" Background="#EEE" Padding="5"/>
 
         <Button  x:Name="btnVoice" Visibility="{Binding IsSelectedAnimal}" Content="voice" HorizontalAlignment="Left" Margin="285,166,0,0" VerticalAlignment="Top"  Height="46" Width="66" Command="{Binding BtnVoiceCommand}" />
         <Button x:Name="btnFeed" Visibility="{Binding IsSelectedAnimal}" Content="feed" HorizontalAlignment="Left" Margin="536,166,0,0" VerticalAlignment="Top"  Height="46" Width="237" Command="{Binding BtnFeedCommand}"/>

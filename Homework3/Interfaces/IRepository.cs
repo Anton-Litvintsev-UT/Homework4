@@ -1,4 +1,4 @@
-﻿namespace Homework3.Generics
+﻿namespace Homework3.Interfaces
 {
     public interface IRepository<T>
     {

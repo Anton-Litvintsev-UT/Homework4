@@ -1,6 +1,5 @@
-﻿using Homework3.Generics;
-using Homework3.Interfaces;
-using Homework3.Models;
+﻿using Homework3.Interfaces;
+using Homework3.Models.Animals;
 
 namespace Homework3.Services
 {
@@ -38,26 +37,7 @@ namespace Homework3.Services
         public void LogStatistics(ILogger logger)
         {
             var members = GetEnclosureMembers().ToList();
-            if (members.Count == 0) return;
-
-            string animalTypeName = typeof(T).Name;
-            logger.Log($"--- Statistics for {animalTypeName} Enclosure (Count: {members.Count}) ---");
-
-            double avgAge = members.Average(a => a.Age);
-            logger.Log($"Average age: {avgAge:F1}");
-
-            double avgNameLen = members.Average(a => a.Name.Length);
-            logger.Log($"Average name length: {avgNameLen:F1}");
-
-            var allLetters = string.Concat(members.Select(a => a.Name.ToLowerInvariant()));
-            var mostPopularLetter = allLetters
-                                    .Where(char.IsLetter)
-                                    .GroupBy(c => c)
-                                    .OrderByDescending(g => g.Count())
-                                    .FirstOrDefault()?.Key;
-
-            if (mostPopularLetter != null)
-                logger.Log($"Most popular letter in names: '{mostPopularLetter}'");
+            logger.Log($"Enclosure {typeof(T).Name}: {members.Count} member(s).");
         }
     }
 }

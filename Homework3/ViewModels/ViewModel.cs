@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Homework3.Generics;
 using Homework3.Interfaces;
-using Homework3.Models;
+using Homework3.Models.Animals;
 using Homework3.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -14,7 +13,7 @@ namespace Homework3.ViewModels
     public class ViewModel : ObservableObject
     {
         private readonly IRepository<AbstractAnimal> _animalRepository;
-
+        private readonly ZooStatisticsService _statsService;
         public ObservableCollection<AbstractAnimal> Animals { get; set; } = [];
         private List<string> LogsList { get; set; } = [];
         private readonly Dictionary<Type, object> _enclosureManagers = [];
@@ -42,8 +41,12 @@ namespace Homework3.ViewModels
                 SetProperty(ref _selected, value);
                 OnPropertyChanged(nameof(SelectedDescription));
                 OnPropertyChanged(nameof(IsSelectedAnimal));
+                UpdateStats();
             }
         }
+
+        private string _statisticsText = "Stats will appear here...";
+        public string StatisticsText { get => _statisticsText; set => SetProperty(ref _statisticsText, value); }
 
         public string SelectedDescription => SelectedAnimal?.Describe() ?? "";
         public string IsSelectedAnimal => SelectedAnimal != null ? "Visible" : "Hidden";
@@ -61,6 +64,7 @@ namespace Homework3.ViewModels
         {
             _animalRepository = animalRepository;
             _logger = logger;
+            _statsService = new ZooStatisticsService();
 
             InitializeEnclosureManagers();
 
@@ -81,6 +85,13 @@ namespace Homework3.ViewModels
 
             if (Animals.Count > 0)
                 SelectedAnimal = Animals[0];
+
+            UpdateStats();
+        }
+
+        private void UpdateStats()
+        {
+            StatisticsText = _statsService.GetStatistics(Animals);
         }
 
         private void InitializeEnclosureManagers()
@@ -109,7 +120,7 @@ namespace Homework3.ViewModels
 
                     _enclosureManagers[type] = manager;
                 }
-            }
+                }
         }
 
         private void OnJoinEnclosure<T>(EnclosureManager<T> manager, T animal) where T : AbstractAnimal
@@ -147,6 +158,7 @@ namespace Homework3.ViewModels
                           .GetMethod("LogStatistics")?
                           .Invoke(managerObj, [_logger]);
             }
+            UpdateStats();
         }
 
         private void HandleAnimalJoinedEvent(object manager, AbstractAnimal animal, Type animalType)
@@ -159,15 +171,20 @@ namespace Homework3.ViewModels
         private void OnAnimalRemoved(AbstractAnimal animal)
         {
             Animals.Remove(animal);
+            UpdateStats();
         }
 
         private void AddInitAnimals()
         {
             if (!_animalRepository.GetAll().Any())
             {
-                _animalRepository.Add(new Jellyfish("Jell", 9));
-                _animalRepository.Add(new Penguin("Pipo", 20));
-                _animalRepository.Add(new Whale("Sandy", 150));
+                var j = new Jellyfish("Jell", 9) { EnclosureId = 1 };
+                var p = new Penguin("Pipo", 20) { EnclosureId = 2 };
+                var w = new Whale("Sandy", 150) { EnclosureId = 3 };
+
+                _animalRepository.Add(j);
+                _animalRepository.Add(p);
+                _animalRepository.Add(w);
             }
         }
 
@@ -196,11 +213,12 @@ namespace Homework3.ViewModels
             if (SelectedAnimal == null || string.IsNullOrWhiteSpace(Food)) return;
 
             var animal = SelectedAnimal;
-            if (!_enclosureManagers.TryGetValue(animal.GetType(), out var managerObj)) return;
+            if (!_enclosureManagers.TryGetValue(animal.GetType(), out var managerObj) || managerObj == null) return;
 
             var managerType = managerObj.GetType();
             var getEnclosureMembersMethod = managerType.GetMethod("GetEnclosureMembers");
-            var animalsToFeed = ((IEnumerable<AbstractAnimal>)getEnclosureMembersMethod!.Invoke(managerObj, null)!).ToList();
+            var membersObj = getEnclosureMembersMethod!.Invoke(managerObj, null)!;
+            var animalsToFeed = ((IEnumerable<AbstractAnimal>)membersObj).ToList();
 
             if (animalsToFeed.Count == 0) return;
 
@@ -261,11 +279,15 @@ namespace Homework3.ViewModels
         private void BtnAddAnimal()
         {
             var addWindow = new AddAnimalWindow(Animals);
-
-            bool? result = addWindow.ShowDialog();
-            if (result == true && addWindow.AddedAnimal != null)
+            if (addWindow.ShowDialog() == true && addWindow.AddedAnimal != null)
             {
-                _animalRepository.Add(addWindow.AddedAnimal);
+                var animal = addWindow.AddedAnimal;
+
+                if (animal is Jellyfish) animal.EnclosureId = 1;
+                else if (animal is Penguin) animal.EnclosureId = 2;
+                else if (animal is Whale) animal.EnclosureId = 3;
+
+                _animalRepository.Add(animal);
             }
         }
 

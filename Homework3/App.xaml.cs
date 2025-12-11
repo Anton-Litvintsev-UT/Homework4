@@ -1,7 +1,7 @@
 ﻿using Homework3.Data;
-using Homework3.Generics;
+using Homework3.Infrastructure;
 using Homework3.Interfaces;
-using Homework3.Models;
+using Homework3.Models.Animals;
 using Homework3.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +34,7 @@ namespace Homework3
             });
 
             services.AddScoped<IRepository<AbstractAnimal>, AnimalRepository>();
-            services.AddSingleton<ILogger, JsonLogger>(); // Or XmlLogger
+            services.AddSingleton<ILogger, JsonLogger>();
             services.AddTransient<ViewModel>();
             services.AddTransient<MainWindow>();
         }

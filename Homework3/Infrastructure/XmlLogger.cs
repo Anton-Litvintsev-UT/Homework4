@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Linq;
 
-namespace Homework3.Models
+namespace Homework3.Infrastructure
 {
     public class XmlLogger : ILogger
     {

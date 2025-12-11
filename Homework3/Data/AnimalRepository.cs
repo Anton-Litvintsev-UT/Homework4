@@ -1,5 +1,5 @@
-﻿using Homework3.Generics;
-using Homework3.Models;
+﻿using Homework3.Interfaces;
+using Homework3.Models.Animals;
 using Microsoft.EntityFrameworkCore;
 
 namespace Homework3.Data
@@ -25,10 +25,11 @@ namespace Homework3.Data
             ItemRemoved?.Invoke(item);
         }
 
-        public IEnumerable<AbstractAnimal> GetAll() => [.. _context.Animals];
+        public IEnumerable<AbstractAnimal> GetAll() => [.. _context.Animals.Include(a => a.Enclosure)];
         public AbstractAnimal? Find(Func<AbstractAnimal, bool> predicate)
         {
             return _context.Animals
+                           .Include(a => a.Enclosure)
                            .AsNoTracking()
                            .FirstOrDefault(predicate);
         }

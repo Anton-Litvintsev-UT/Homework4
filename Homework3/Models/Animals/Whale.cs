@@ -1,6 +1,6 @@
 ﻿using Homework3.Interfaces;
 
-namespace Homework3.Models
+namespace Homework3.Models.Animals
 {
     public class Whale : AbstractAnimal, ICrazyAction
     {
